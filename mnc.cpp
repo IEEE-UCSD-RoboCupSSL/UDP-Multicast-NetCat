@@ -51,7 +51,7 @@ bool processArgs(int argc, char *argv[]) {
         printHelp();
         return false;
     }
-    if(ipAddr == "localhost") ipAddr = "127.0.0.1";
+    //if(ipAddr == "localhost") ipAddr = "127.0.0.1";
     if(ipAddr == "") {
         std::cout << "missing destination ip addr" << std::endl;
         printHelp();
