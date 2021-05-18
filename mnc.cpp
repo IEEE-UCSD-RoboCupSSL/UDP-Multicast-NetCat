@@ -74,13 +74,15 @@ int main(int argc, char *argv[]) {
     auto receive_buffer = boost::array<char, 1024>();
     auto socket = ip::udp::socket(ios);
 
-    if(isServerMode) {
-        socket.open(ep.protocol());
-        socket.set_option(ip::udp::socket::reuse_address(true));
-        socket.bind(ep);
-        socket.set_option(ip::multicast::join_group(ep.address()));
-    }
+    socket.open(ep.protocol());
+    socket.set_option(ip::udp::socket::reuse_address(true));
+    socket.bind(ep);
+    socket.set_option(ip::multicast::join_group(ep.address()));
+
     
+    size_t packetSize;
+    std::string packetString;
+
     while(true) {
         auto t = std::chrono::steady_clock::now(); 
 
@@ -88,15 +90,12 @@ int main(int argc, char *argv[]) {
 //        std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
         if(isServerMode) {
-            size_t packetSize;
-            std::string packetString;
-
             packetSize = socket.receive_from(asio::buffer(receive_buffer), ep);
             packetString = std::string(receive_buffer.begin(), receive_buffer.begin() + packetSize);
-
             std::cout << packetString << std::flush;
         } else {
-
+            std::getline(std::cin, packetString);
+            socket.send_to(asio::buffer(packetString + "\n"), ep);
         }
 
 
