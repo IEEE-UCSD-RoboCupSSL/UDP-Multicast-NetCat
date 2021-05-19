@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
         if(isServerMode) {
             packetSize = socket.receive_from(asio::buffer(receive_buffer), ep);
             packetString = std::string(receive_buffer.begin(), receive_buffer.begin() + packetSize);
-            std::cout << packetString << std::flush;
+            std::cout << packetString << std::endl;
         } else {
             std::getline(std::cin, packetString);
             socket.send_to(asio::buffer(packetString + "\n"), ep);
